@@ -223,6 +223,12 @@
   color: var(--color-text-tertiary);
 }
 
+.setting-value-enabled {
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
 /* About */
 .about-text {
   color: var(--color-text-secondary);

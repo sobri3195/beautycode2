@@ -256,8 +256,120 @@
   .insight-header h1 {
     font-size: 2rem;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
 }
+
+/* Pattern Cards */
+.pattern-card {
+  margin-bottom: var(--spacing-lg);
+  border: 2px solid transparent;
+}
+
+.pattern-positive {
+  border-color: var(--color-success);
+  background: #f0fdf4;
+}
+
+.pattern-negative {
+  border-color: var(--color-error);
+  background: #fef2f2;
+}
+
+.pattern-neutral {
+  border-color: var(--color-primary);
+  background: #eff6ff;
+}
+
+.pattern-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.pattern-icon {
+  font-size: 2rem;
+}
+
+.pattern-title-section {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.pattern-title-section h4 {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--color-text);
+}
+
+.pattern-badge {
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pattern-badge-positive {
+  background: var(--color-success);
+  color: white;
+}
+
+.pattern-badge-negative {
+  background: var(--color-error);
+  color: white;
+}
+
+.pattern-badge-neutral {
+  background: var(--color-primary);
+  color: white;
+}
+
+.pattern-description {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-md);
+}
+
+.pattern-action {
+  padding: var(--spacing-md);
+  background: rgba(255,255,255, 0.6);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.pattern-action strong {
+  color: var(--color-primary);
+}
+
+.patterns-intro {
+  color: var(--color-text-secondary);
+  margin-bottom: 0;
+}
+
+.data-progress {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.progress-text {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.progress-hint {
+  font-size: 0.875rem;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+  margin: 0;
+}
+

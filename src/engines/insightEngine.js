@@ -376,3 +376,179 @@ function getCurrentWeek() {
   const oneWeek = 1000 * 60 * 60 * 24 * 7
   return Math.ceil(diff / oneWeek)
 }
+
+// Pattern Recognition Functions
+export function analyzePatternCorrelations(logs) {
+  if (logs.length < 7) {
+    return {
+      hasEnoughData: false,
+      patterns: []
+    }
+  }
+  
+  const patterns = []
+  
+  // 1. Sleep vs Energy correlation
+  const sleepEnergy = calculateCorrelation(
+    logs.map(l => l.sleep_hours || 0),
+    logs.map(l => energyToNumeric(l.energy_level))
+  )
+  
+  if (Math.abs(sleepEnergy) > 0.3) {
+    patterns.push({
+      type: 'sleep_energy',
+      title: sleepEnergy > 0 ? 'Sleep Boosts Your Energy' : 'Low Sleep, Low Energy',
+      description: sleepEnergy > 0
+        ? 'Your energy levels are strongly correlated with sleep quality. Better sleep = more energy!'
+        : 'When you sleep less, your energy drops significantly. Prioritize sleep!',
+      strength: Math.round(Math.abs(sleepEnergy) * 100),
+      trend: sleepEnergy > 0 ? 'positive' : 'negative',
+      icon: sleepEnergy > 0 ? '🔋' : '😴'
+    })
+  }
+  
+  // 2. Movement vs Mood/Energy correlation
+  const movementEnergy = calculateCorrelation(
+    logs.map(l => l.movement_minutes || 0),
+    logs.map(l => energyToNumeric(l.energy_level))
+  )
+  
+  if (Math.abs(movementEnergy) > 0.3) {
+    patterns.push({
+      type: 'movement_energy',
+      title: 'Movement Fuels Your Day',
+      description: `Days with more movement show ${movementEnergy > 0 ? 'higher' : 'lower'} energy levels. Keep moving!`,
+      strength: Math.round(Math.abs(movementEnergy) * 100),
+      trend: movementEnergy > 0 ? 'positive' : 'negative',
+      icon: '🏃'
+    })
+  }
+  
+  // 3. Stress vs Sleep quality correlation
+  const stressSleep = calculateCorrelation(
+    logs.map(l => stressToNumeric(l.stress_level)),
+    logs.map(l => sleepQualityToNumeric(l.sleep_quality))
+  )
+  
+  if (Math.abs(stressSleep) > 0.3) {
+    patterns.push({
+      type: 'stress_sleep',
+      title: 'Stress Affects Your Sleep',
+      description: stressSleep < 0
+        ? 'High stress days lead to poorer sleep quality. Try stress management before bed.'
+        : 'Your sleep quality remains stable even during stressful periods. Great resilience!',
+      strength: Math.round(Math.abs(stressSleep) * 100),
+      trend: stressSleep < 0 ? 'negative' : 'positive',
+      icon: '😌'
+    })
+  }
+  
+  // 4. Nutrition vs Energy correlation
+  const nutritionEnergy = logs.filter(l => l.meals_logged)
+  if (nutritionEnergy.length >= 5) {
+    const energyOnTrackedDays = nutritionEnergy.map(l => energyToNumeric(l.energy_level))
+    const avgEnergyTracked = energyOnTrackedDays.reduce((a, b) => a + b, 0) / energyOnTrackedDays.length
+    
+    const energyOnUntrackedDays = logs
+      .filter(l => !l.meals_logged)
+      .map(l => energyToNumeric(l.energy_level))
+    
+    if (energyOnUntrackedDays.length >= 3) {
+      const avgEnergyUntracked = energyOnUntrackedDays.reduce((a, b) => a + b, 0) / energyOnUntrackedDays.length
+      
+      if (Math.abs(avgEnergyTracked - avgEnergyUntracked) > 0.5) {
+        patterns.push({
+          type: 'nutrition_energy',
+          title: 'Tracked Meals = Better Energy',
+          description: avgEnergyTracked > avgEnergyUntracked
+            ? 'You tend to have higher energy on days when you track your meals. Keep it up!'
+            : 'Consider what foods give you the most energy and optimize your diet.',
+          strength: Math.round(Math.abs(avgEnergyTracked - avgEnergyUntracked) * 100),
+          trend: avgEnergyTracked > avgEnergyUntracked ? 'positive' : 'neutral',
+          icon: '🥗'
+        })
+      }
+    }
+  }
+  
+  // 5. Weekly patterns (weekday vs weekend)
+  const weekdayLogs = logs.filter(l => {
+    const date = new Date(l.date)
+    return date.getDay() >= 1 && date.getDay() <= 5
+  })
+  
+  const weekendLogs = logs.filter(l => {
+    const date = new Date(l.date)
+    return date.getDay() === 0 || date.getDay() === 6
+  })
+  
+  if (weekdayLogs.length >= 3 && weekendLogs.length >= 2) {
+    const weekdayAvgSleep = weekdayLogs.reduce((sum, l) => sum + (l.sleep_hours || 0), 0) / weekdayLogs.length
+    const weekendAvgSleep = weekendLogs.reduce((sum, l) => sum + (l.sleep_hours || 0), 0) / weekendLogs.length
+    
+    if (Math.abs(weekdayAvgSleep - weekendAvgSleep) > 1) {
+      patterns.push({
+        type: 'weekly_pattern',
+        title: 'Weekend Sleep Pattern',
+        description: `You sleep ${weekendAvgSleep > weekdayAvgSleep ? 'more' : 'less'} on weekends (${Math.abs(weekendAvgSleep - weekdayAvgSleep).toFixed(1)}h difference). Try to maintain consistency!`,
+        strength: Math.round(Math.abs(weekdayAvgSleep - weekendAvgSleep) * 30),
+        trend: 'neutral',
+        icon: '📅'
+      })
+    }
+  }
+  
+  // Sort by strength
+  patterns.sort((a, b) => b.strength - a.strength)
+  
+  return {
+    hasEnoughData: true,
+    patterns: patterns.slice(0, 5) // Return top 5 patterns
+  }
+}
+
+// Helper functions
+function calculateCorrelation(x, y) {
+  const n = x.length
+  if (n === 0 || n !== y.length) return 0
+  
+  const sumX = x.reduce((a, b) => a + b, 0)
+  const sumY = y.reduce((a, b) => a + b, 0)
+  const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0)
+  const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0)
+  const sumY2 = y.reduce((sum, yi) => sum + yi * yi, 0)
+  
+  const numerator = n * sumXY - sumX * sumY
+  const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY))
+  
+  return denominator === 0 ? 0 : numerator / denominator
+}
+
+function energyToNumeric(energy) {
+  const mapping = {
+    'very_low': 1,
+    'low': 2,
+    'medium': 3,
+    'high': 4,
+    'very_high': 5
+  }
+  return mapping[energy] || 3
+}
+
+function sleepQualityToNumeric(quality) {
+  const mapping = {
+    'poor': 1,
+    'fair': 2,
+    'good': 3
+  }
+  return mapping[quality] || 2
+}
+
+function stressToNumeric(stress) {
+  const mapping = {
+    'low': 1,
+    'medium': 2,
+    'high': 3
+  }
+  return mapping[stress] || 2
+}

@@ -9,8 +9,13 @@ import './TodayPage.css'
 
 export default function TodayPage() {
   const { user, bodyType } = useUser()
-  const { dailyHabits, loadTodayHabits, getTodayLog, currentStreak } = useHabit()
+  const { dailyHabits, loadTodayHabits, getTodayLog, currentStreak, getWeekLogs } = useHabit()
   const [todayInsight, setTodayInsight] = useState(null)
+  const [quickStats, setQuickStats] = useState({
+    sleep: { value: 'No data', status: 'neutral' },
+    nutrition: { value: 'No data', status: 'neutral' },
+    movement: { value: 'No data', status: 'neutral' }
+  })
   
   useEffect(() => {
     if (bodyType) {
@@ -25,6 +30,59 @@ export default function TodayPage() {
       setTodayInsight(insight)
     }
   }, [user, bodyType])
+  
+  useEffect(() => {
+    calculateQuickStats()
+  }, [])
+  
+  const calculateQuickStats = () => {
+    const weekLogs = getWeekLogs()
+    
+    if (weekLogs.length === 0) {
+      setQuickStats({
+        sleep: { value: 'No data', status: 'neutral' },
+        nutrition: { value: 'No data', status: 'neutral' },
+        movement: { value: 'No data', status: 'neutral' }
+      })
+      return
+    }
+    
+    // Calculate sleep average
+    const sleepLogs = weekLogs.filter(log => log.sleep_hours)
+    const avgSleep = sleepLogs.length > 0 
+      ? (sleepLogs.reduce((sum, log) => sum + log.sleep_hours, 0) / sleepLogs.length).toFixed(1)
+      : 0
+    
+    // Calculate nutrition consistency
+    const nutritionDays = weekLogs.filter(log => log.meals_logged).length
+    const nutritionConsistency = Math.round((nutritionDays / weekLogs.length) * 100)
+    
+    // Calculate average movement
+    const movementLogs = weekLogs.filter(log => log.movement_minutes)
+    const avgMovement = movementLogs.length > 0
+      ? Math.round(movementLogs.reduce((sum, log) => sum + log.movement_minutes, 0) / movementLogs.length)
+      : 0
+    
+    // Determine statuses
+    const sleepStatus = avgSleep < 6 ? 'alert' : avgSleep < 7 ? 'warning' : 'good'
+    const nutritionStatus = nutritionConsistency < 30 ? 'alert' : nutritionConsistency < 60 ? 'warning' : 'good'
+    const movementStatus = avgMovement < 15 ? 'alert' : avgMovement < 25 ? 'warning' : 'good'
+    
+    setQuickStats({
+      sleep: {
+        value: avgSleep > 0 ? `${avgSleep}h` : 'No data',
+        status: avgSleep > 0 ? sleepStatus : 'neutral'
+      },
+      nutrition: {
+        value: nutritionDays > 0 ? `${Math.round(nutritionConsistency)}% tracked` : 'No data',
+        status: nutritionDays > 0 ? nutritionStatus : 'neutral'
+      },
+      movement: {
+        value: avgMovement > 0 ? `${avgMovement} min` : 'No data',
+        status: avgMovement > 0 ? movementStatus : 'neutral'
+      }
+    })
+  }
   
   const today = new Date().toLocaleDateString('id-ID', {
     weekday: 'long',
@@ -154,20 +212,20 @@ export default function TodayPage() {
           <StatCard
             icon="😴"
             label="Sleep"
-            value="7.5h"
-            status="good"
+            value={quickStats.sleep.value}
+            status={quickStats.sleep.status}
           />
           <StatCard
             icon="🥗"
             label="Nutrition"
-            value="On track"
-            status="good"
+            value={quickStats.nutrition.value}
+            status={quickStats.nutrition.status}
           />
           <StatCard
             icon="🏃"
             label="Movement"
-            value="25 min"
-            status="good"
+            value={quickStats.movement.value}
+            status={quickStats.movement.status}
           />
         </motion.div>
       </div>

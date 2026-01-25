@@ -295,6 +295,10 @@
   color: var(--color-error);
 }
 
+.stat-neutral {
+  color: var(--color-text-tertiary);
+}
+
 @media (max-width: 768px) {
   .today-header h1 {
     font-size: 2rem;
