@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useHabit } from '../../hooks/useHabit'
+import { useUser } from '../../hooks/useUser'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import './LogPage.css'
 
 export default function LogPage() {
-  const { getTodayLog, updateTodayLog } = useHabit()
+  const { bodyType } = useUser()
+  const { getTodayLog, updateTodayLog, dailyHabits, loadTodayHabits } = useHabit()
   const [logData, setLogData] = useState({
     sleep_hours: '',
     sleep_quality: '',
@@ -15,6 +17,12 @@ export default function LogPage() {
     movement_type: '',
     stress_level: '',
     meals_logged: false,
+    water_intake_liters: '',
+    mood: '',
+    sunlight_minutes: '',
+    recovery_minutes: '',
+    main_habit_done: false,
+    secondary_habit_done: false,
     notes: ''
   })
   
@@ -23,12 +31,19 @@ export default function LogPage() {
   useEffect(() => {
     const todayLog = getTodayLog()
     if (todayLog) {
-      setLogData(todayLog)
+      setLogData(prev => ({ ...prev, ...todayLog }))
     }
   }, [])
+
+  useEffect(() => {
+    if (bodyType) {
+      loadTodayHabits(bodyType)
+    }
+  }, [bodyType, loadTodayHabits])
   
   const handleSave = () => {
-    updateTodayLog(logData)
+    const habitsCompleted = Number(logData.main_habit_done) + Number(logData.secondary_habit_done)
+    updateTodayLog({ ...logData, habits_completed: habitsCompleted })
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
@@ -230,12 +245,156 @@ export default function LogPage() {
             </label>
           </Card>
         </motion.div>
+
+        {/* Hydration */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55 }}
+        >
+          <Card>
+            <div className="log-section">
+              <div className="section-icon">💧</div>
+              <h3>Hydration</h3>
+            </div>
+
+            <div className="form-group">
+              <label>Water intake (liters)</label>
+              <input
+                type="number"
+                value={logData.water_intake_liters}
+                onChange={(e) => updateField('water_intake_liters', e.target.value)}
+                placeholder="2"
+                step="0.1"
+                min="0"
+                max="6"
+              />
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Sunlight */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <Card>
+            <div className="log-section">
+              <div className="section-icon">🌤️</div>
+              <h3>Sunlight</h3>
+            </div>
+
+            <div className="form-group">
+              <label>Minutes outside</label>
+              <input
+                type="number"
+                value={logData.sunlight_minutes}
+                onChange={(e) => updateField('sunlight_minutes', e.target.value)}
+                placeholder="15"
+                min="0"
+                max="180"
+              />
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Recovery */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.65 }}
+        >
+          <Card>
+            <div className="log-section">
+              <div className="section-icon">🧘</div>
+              <h3>Recovery</h3>
+            </div>
+
+            <div className="form-group">
+              <label>Breathwork / meditation (minutes)</label>
+              <input
+                type="number"
+                value={logData.recovery_minutes}
+                onChange={(e) => updateField('recovery_minutes', e.target.value)}
+                placeholder="5"
+                min="0"
+                max="60"
+              />
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Mood */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+        >
+          <Card>
+            <div className="log-section">
+              <div className="section-icon">🙂</div>
+              <h3>Mood</h3>
+            </div>
+
+            <div className="button-group">
+              {['low', 'neutral', 'good', 'great'].map((mood) => (
+                <OptionButton
+                  key={mood}
+                  selected={logData.mood === mood}
+                  onClick={() => updateField('mood', mood)}
+                >
+                  {mood === 'low' && 'Low'}
+                  {mood === 'neutral' && 'Neutral'}
+                  {mood === 'good' && 'Good'}
+                  {mood === 'great' && 'Great'}
+                </OptionButton>
+              ))}
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Habit Checklist */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.75 }}
+        >
+          <Card>
+            <div className="log-section">
+              <div className="section-icon">✅</div>
+              <h3>Habit Checklist</h3>
+            </div>
+
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={logData.main_habit_done}
+                onChange={(e) => updateField('main_habit_done', e.target.checked)}
+              />
+              <span>
+                Main habit: {dailyHabits?.main_habit?.title || 'Today\'s main habit'}
+              </span>
+            </label>
+
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={logData.secondary_habit_done}
+                onChange={(e) => updateField('secondary_habit_done', e.target.checked)}
+              />
+              <span>
+                Secondary habit: {dailyHabits?.secondary_habit?.title || 'Secondary habit'}
+              </span>
+            </label>
+          </Card>
+        </motion.div>
         
         {/* Notes */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.8 }}
         >
           <Card>
             <div className="log-section">
@@ -256,7 +415,7 @@ export default function LogPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
+          transition={{ delay: 0.9 }}
         >
           <Button
             fullWidth

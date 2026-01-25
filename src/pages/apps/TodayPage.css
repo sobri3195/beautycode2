@@ -257,7 +257,7 @@
 /* Quick Stats */
 .quick-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-xl);
 }
@@ -289,6 +289,10 @@
 
 .stat-warning {
   color: var(--color-warning);
+}
+
+.stat-neutral {
+  color: var(--color-text-secondary);
 }
 
 .stat-alert {

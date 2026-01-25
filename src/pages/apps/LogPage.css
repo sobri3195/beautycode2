@@ -85,10 +85,11 @@
 .button-group {
   display: flex;
   gap: var(--spacing-sm);
+  flex-wrap: wrap;
 }
 
 .option-btn {
-  flex: 1;
+  flex: 1 1 120px;
   padding: var(--spacing-md);
   background: var(--color-bg-secondary);
   border: 2px solid var(--color-border);

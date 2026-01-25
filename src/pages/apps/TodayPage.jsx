@@ -9,8 +9,9 @@ import './TodayPage.css'
 
 export default function TodayPage() {
   const { user, bodyType } = useUser()
-  const { dailyHabits, loadTodayHabits, getTodayLog, currentStreak } = useHabit()
+  const { dailyHabits, loadTodayHabits, getTodayLog, currentStreak, habitLogs } = useHabit()
   const [todayInsight, setTodayInsight] = useState(null)
+  const [todayLog, setTodayLog] = useState(null)
   
   useEffect(() => {
     if (bodyType) {
@@ -24,7 +25,11 @@ export default function TodayPage() {
       const insight = generateDailyInsight(user, todayLog, bodyType)
       setTodayInsight(insight)
     }
-  }, [user, bodyType])
+  }, [user, bodyType, habitLogs])
+
+  useEffect(() => {
+    setTodayLog(getTodayLog())
+  }, [habitLogs])
   
   const today = new Date().toLocaleDateString('id-ID', {
     weekday: 'long',
@@ -154,20 +159,32 @@ export default function TodayPage() {
           <StatCard
             icon="😴"
             label="Sleep"
-            value="7.5h"
-            status="good"
+            value={todayLog?.sleep_hours ? `${todayLog.sleep_hours}h` : 'Not logged'}
+            status={todayLog?.sleep_hours >= 7 ? 'good' : 'neutral'}
           />
           <StatCard
-            icon="🥗"
-            label="Nutrition"
-            value="On track"
-            status="good"
+            icon="💧"
+            label="Hydration"
+            value={todayLog?.water_intake_liters ? `${todayLog.water_intake_liters}L` : 'Not logged'}
+            status={todayLog?.water_intake_liters >= 2 ? 'good' : 'neutral'}
           />
           <StatCard
-            icon="🏃"
-            label="Movement"
-            value="25 min"
-            status="good"
+            icon="🌤️"
+            label="Sunlight"
+            value={todayLog?.sunlight_minutes ? `${todayLog.sunlight_minutes} min` : 'Not logged'}
+            status={todayLog?.sunlight_minutes >= 10 ? 'good' : 'neutral'}
+          />
+          <StatCard
+            icon="🧘"
+            label="Recovery"
+            value={todayLog?.recovery_minutes ? `${todayLog.recovery_minutes} min` : 'Not logged'}
+            status={todayLog?.recovery_minutes >= 5 ? 'good' : 'neutral'}
+          />
+          <StatCard
+            icon="🙂"
+            label="Mood"
+            value={formatMood(todayLog?.mood)}
+            status={getMoodStatus(todayLog?.mood)}
           />
         </motion.div>
       </div>
@@ -268,4 +285,21 @@ function StatCard({ icon, label, value, status }) {
       <div className={`stat-value stat-${status}`}>{value}</div>
     </Card>
   )
+}
+
+function formatMood(mood) {
+  const moodMap = {
+    low: 'Low',
+    neutral: 'Neutral',
+    good: 'Good',
+    great: 'Great'
+  }
+
+  return moodMap[mood] || 'Not logged'
+}
+
+function getMoodStatus(mood) {
+  if (!mood) return 'neutral'
+  if (mood === 'low') return 'alert'
+  return 'good'
 }

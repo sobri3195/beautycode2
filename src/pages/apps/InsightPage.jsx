@@ -7,7 +7,7 @@ import Card from '../../components/ui/Card'
 import './InsightPage.css'
 
 export default function InsightPage() {
-  const { user, bodyType } = useUser()
+  const { bodyType } = useUser()
   const { getWeekLogs } = useHabit()
   const [weeklySummary, setWeeklySummary] = useState(null)
   const [activeTab, setActiveTab] = useState('week')
@@ -96,6 +96,26 @@ function WeeklyView({ summary }) {
               icon="🏃"
               label="Avg Movement"
               value={`${summary.stats.avg_movement} min`}
+            />
+            <StatItem
+              icon="💧"
+              label="Avg Hydration"
+              value={`${summary.stats.avg_hydration} L`}
+            />
+            <StatItem
+              icon="🌤️"
+              label="Avg Sunlight"
+              value={`${summary.stats.avg_sunlight} min`}
+            />
+            <StatItem
+              icon="🧘"
+              label="Avg Recovery"
+              value={`${summary.stats.avg_recovery} min`}
+            />
+            <StatItem
+              icon="🙂"
+              label="Mood Avg"
+              value={`${summary.stats.avg_mood}/4`}
             />
             <StatItem
               icon="✅"
