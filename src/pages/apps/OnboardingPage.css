@@ -1,0 +1,231 @@
+.onboarding-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+}
+
+.onboarding-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: var(--z-fixed);
+}
+
+.onboarding-progress-bar {
+  height: 100%;
+  background: white;
+  transition: width 0.3s ease;
+}
+
+.onboarding-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.onboarding-step {
+  width: 100%;
+  background: white;
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+}
+
+.step-header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.step-emoji {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.step-header h1 {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.step-header h2 {
+  font-size: 1.75rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.step-header p {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+/* Welcome Step */
+.welcome-card {
+  margin-bottom: var(--spacing-lg);
+}
+
+.welcome-list {
+  list-style: none;
+  padding: 0;
+}
+
+.welcome-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.welcome-list li:first-child {
+  border-top: none;
+}
+
+.list-icon {
+  font-size: 1.5rem;
+}
+
+.disclaimer-card {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  margin-bottom: var(--spacing-lg);
+}
+
+.disclaimer-icon-small {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: var(--spacing-xl);
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text);
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.option-button {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-bg-secondary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: inherit;
+}
+
+.option-button:hover {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-primary-light);
+}
+
+.option-button-selected {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.button-group {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-2xl);
+}
+
+.button-group button {
+  flex: 1;
+}
+
+/* Result Step */
+.result-step {
+  max-width: 700px;
+}
+
+.result-header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.result-emoji {
+  font-size: 5rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.result-header h1 {
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.result-description {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+}
+
+.confidence-score {
+  text-align: center;
+}
+
+.confidence-score > span {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.confidence-bar {
+  height: 40px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.characteristics-list {
+  list-style: none;
+  padding: 0;
+}
+
+.characteristics-list li {
+  padding: var(--spacing-md);
+  margin: var(--spacing-sm) 0;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 768px) {
+  .onboarding-content {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+  
+  .onboarding-step {
+    padding: var(--spacing-xl);
+  }
+  
+  .option-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .result-emoji {
+    font-size: 4rem;
+  }
+}
