@@ -1,0 +1,13 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="beautycode-gradient" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#beautycode-gradient)" />
+  <path
+    d="M24 20H37.5C43.3 20 47 23.7 47 29C47 32.8 44.8 35.8 41.2 37.2C45.2 38.4 48 41.7 48 46C48 52.1 43.4 56 36.2 56H24V20ZM36.4 34.5C39.5 34.5 41.4 32.7 41.4 29.8C41.4 27 39.6 25.2 36.5 25.2H30.4V34.5H36.4ZM36.8 50.8C40.3 50.8 42.4 48.9 42.4 45.8C42.4 42.8 40.2 40.8 36.8 40.8H30.4V50.8H36.8Z"
+    fill="#ffffff"
+  />
+</svg>
