@@ -313,7 +313,7 @@ export function generateDailyHabits(bodyType, day, userProgress = {}) {
   const typeLibrary = HABIT_LIBRARY[bodyType.primary_body_type] || HABIT_LIBRARY.red
   
   // Determine which categories to prioritize based on day and progress
-  const categories = Object.keys(HABIT_CATEGORIES)
+  const categories = Object.values(HABIT_CATEGORIES)
   const primaryCategory = categories[day % categories.length]
   
   // Select main habit
@@ -331,11 +331,11 @@ export function generateDailyHabits(bodyType, day, userProgress = {}) {
   
   return {
     date: new Date().toISOString().split('T')[0],
-    main_habit: {
+    main_habit: mainHabit ? {
       ...mainHabit,
       category: primaryCategory,
       priority: 'main'
-    },
+    } : null,
     secondary_habit: secondaryHabit ? {
       ...secondaryHabit,
       category: secondaryCategory,
