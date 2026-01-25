@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useUser } from '../../hooks/useUser'
 import { useHabit } from '../../hooks/useHabit'
-import { generateWeeklySummary } from '../../engines/insightEngine'
+import { generateWeeklySummary, analyzePatternCorrelations } from '../../engines/insightEngine'
 import Card from '../../components/ui/Card'
 import './InsightPage.css'
 
@@ -10,13 +10,20 @@ export default function InsightPage() {
   const { user, bodyType } = useUser()
   const { getWeekLogs } = useHabit()
   const [weeklySummary, setWeeklySummary] = useState(null)
+  const [patternData, setPatternData] = useState(null)
   const [activeTab, setActiveTab] = useState('week')
-  
+
   useEffect(() => {
     const weekLogs = getWeekLogs()
     if (weekLogs.length > 0 && bodyType) {
       const summary = generateWeeklySummary(weekLogs, bodyType)
       setWeeklySummary(summary)
+      
+      // Analyze patterns
+      const patterns = analyzePatternCorrelations(weekLogs)
+      setPatternData(patterns)
+    } else {
+      setPatternData(analyzePatternCorrelations([]))
     }
   }, [bodyType])
   
@@ -59,7 +66,7 @@ export default function InsightPage() {
         )}
         
         {activeTab === 'patterns' && (
-          <PatternsView />
+          <PatternsView patternData={patternData} />
         )}
         
         {activeTab === 'tips' && bodyType && (
@@ -188,13 +195,10 @@ function WeeklyView({ summary }) {
   )
 }
 
-function PatternsView() {
-  return (
-    <div className="patterns-view">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
+function PatternsView({ patternData }) {
+  if (!patternData) {
+    return (
+      <div className="patterns-view">
         <Card>
           <div className="empty-state">
             <div className="empty-icon">📊</div>
@@ -205,9 +209,113 @@ function PatternsView() {
             </p>
           </div>
         </Card>
-      </motion.div>
+      </div>
+    )
+  }
+
+  if (!patternData.hasEnoughData) {
+    return (
+      <div className="patterns-view">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Card>
+            <div className="empty-state">
+              <div className="empty-icon">📊</div>
+              <h3>Pattern Recognition</h3>
+              <p>
+                Keep logging untuk setidaknya 1 minggu untuk melihat patterns yang meaningful.
+                AI akan analyze correlations antara sleep, nutrition, movement, dan energy levels.
+              </p>
+              <div className="data-progress">
+                <p className="progress-text">Data collected: <strong>{patternData.patterns.length > 0 ? 'In progress' : 'Not enough'}</strong></p>
+                <p className="progress-hint">Log your data for at least 7 days to see patterns</p>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="patterns-view">
+      {patternData.patterns.length === 0 ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Card>
+            <div className="empty-state">
+              <div className="empty-icon">📊</div>
+              <h3>Pattern Recognition</h3>
+              <p>
+                No significant patterns detected yet. Keep logging consistently to help the AI find meaningful correlations in your data.
+              </p>
+            </div>
+          </Card>
+        </motion.div>
+      ) : (
+        <>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <Card>
+              <h3>📊 Detected Patterns</h3>
+              <p className="patterns-intro">
+                Based on your data, we found {patternData.patterns.length} pattern{patternData.patterns.length !== 1 ? 's' : ''} that can help optimize your health.
+              </p>
+            </Card>
+          </motion.div>
+
+          {patternData.patterns.map((pattern, index) => (
+            <motion.div
+              key={pattern.type}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + index * 0.1 }}
+            >
+              <Card className={`pattern-card pattern-${pattern.trend}`}>
+                <div className="pattern-header">
+                  <span className="pattern-icon">{pattern.icon}</span>
+                  <div className="pattern-title-section">
+                    <h4>{pattern.title}</h4>
+                    <span className={`pattern-badge pattern-badge-${pattern.trend}`}>
+                      {pattern.strength}% strength
+                    </span>
+                  </div>
+                </div>
+                
+                <p className="pattern-description">{pattern.description}</p>
+                
+                <div className="pattern-action">
+                  <strong>💡 Action:</strong>
+                  {getActionForPattern(pattern)}
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </>
+      )}
     </div>
   )
+}
+
+function getActionForPattern(pattern) {
+  const actions = {
+    sleep_energy: pattern.trend === 'positive'
+      ? 'Maintain your sleep schedule to keep energy high'
+      : 'Try going to bed 30 minutes earlier tonight',
+    movement_energy: 'Add a 10-minute walk to your routine today',
+    stress_sleep: 'Practice 5 minutes of deep breathing before bed',
+    nutrition_energy: 'Continue tracking your meals for better insights',
+    weekly_pattern: 'Set a consistent sleep time for weekends too'
+  }
+  
+  return actions[pattern.type] || 'Continue logging to see more patterns'
 }
 
 function TipsView({ bodyType }) {

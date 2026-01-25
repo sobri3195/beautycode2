@@ -17,6 +17,91 @@ export default function ProfilePage() {
       navigate('/home')
     }
   }
+
+  const handleExportData = () => {
+    if (habitLogs.length === 0) {
+      alert('No data to export yet. Start logging your daily activities first!')
+      return
+    }
+
+    const exportData = {
+      export_date: new Date().toISOString(),
+      export_version: '1.0.0',
+      app_name: 'Beautycode Health OS',
+      
+      user: {
+        age: user?.age,
+        gender: user?.gender,
+        onboarding_completed: user?.onboarding_completed,
+        created_at: user?.created_at
+      },
+      
+      bodyType: bodyType ? {
+        primary_body_type: bodyType.primary_body_type,
+        primary_name: bodyType.primary_info?.name,
+        primary_description: bodyType.primary_info?.description,
+        confidence_score: bodyType.confidence_score,
+        secondary_body_type: bodyType.secondary_body_type,
+        secondary_name: bodyType.secondary_info?.name,
+        created_at: bodyType.timestamp
+      } : null,
+      
+      habitLogs: habitLogs.map(log => ({
+        date: log.date,
+        sleep_hours: log.sleep_hours,
+        sleep_quality: log.sleep_quality,
+        energy_level: log.energy_level,
+        movement_minutes: log.movement_minutes,
+        movement_type: log.movement_type,
+        stress_level: log.stress_level,
+        meals_logged: log.meals_logged,
+        notes: log.notes,
+        timestamp: log.timestamp,
+        updated_at: log.updated_at
+      })),
+      
+      statistics: {
+        total_days_logged: habitLogs.length,
+        current_streak: currentStreak,
+        date_range: {
+          start: habitLogs[0]?.date,
+          end: habitLogs[habitLogs.length - 1]?.date
+        },
+        averages: calculateExportStats(habitLogs)
+      }
+    }
+
+    const jsonString = JSON.stringify(exportData, null, 2)
+    const blob = new Blob([jsonString], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    
+    const dateStr = new Date().toISOString().split('T')[0]
+    link.href = url
+    link.download = `beautycode-export-${dateStr}.json`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
+  const calculateExportStats = (logs) => {
+    if (logs.length === 0) return null
+    
+    const sleepLogs = logs.filter(l => l.sleep_hours)
+    const movementLogs = logs.filter(l => l.movement_minutes)
+    const nutritionLogs = logs.filter(l => l.meals_logged)
+    
+    return {
+      avg_sleep: sleepLogs.length > 0 
+        ? (sleepLogs.reduce((sum, l) => sum + l.sleep_hours, 0) / sleepLogs.length).toFixed(1)
+        : 0,
+      avg_movement: movementLogs.length > 0
+        ? Math.round(movementLogs.reduce((sum, l) => sum + l.movement_minutes, 0) / movementLogs.length)
+        : 0,
+      nutrition_tracking_rate: Math.round((nutritionLogs.length / logs.length) * 100)
+    }
+  }
   
   const totalDaysLogged = habitLogs.length
   const joinDate = user?.created_at 
@@ -154,10 +239,10 @@ export default function ProfilePage() {
                 <span>Notifications</span>
                 <span className="setting-value">Coming Soon</span>
               </button>
-              <button className="setting-item">
+              <button className="setting-item" onClick={handleExportData}>
                 <span>📤</span>
                 <span>Export Data</span>
-                <span className="setting-value">Coming Soon</span>
+                <span className="setting-value-enabled">Download</span>
               </button>
               <button className="setting-item">
                 <span>🔒</span>
