@@ -292,3 +292,9 @@ Untuk pertanyaan atau support:
 **Built with 💜 for sustainable health transformation**
 
 © 2024 Beautycode. Your Personal Health Operating System.
+
+
+## 📄 Product Documents
+
+- `docs/INVESTOR_PITCH_DRAFT.md` — transkrip awal investor pitch BeautyCode.
+- `docs/BRD_TEKNIS_BODY_TYPE_QUIZ.md` — BRD teknis awal untuk Body Type Quiz module.
