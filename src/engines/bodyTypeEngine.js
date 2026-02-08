@@ -1,3 +1,5 @@
+import { BODY_TYPE_DEFINITIONS, QUIZ_QUESTIONS } from '../data/bodyTypeQuiz'
+
 // Body Type Engine - Rule-Based System
 // Determines body type based on user input with explainable reasoning
 
@@ -49,6 +51,74 @@ const BODY_TYPES = {
       'Energi sangat dipengaruhi fase hormonal'
     ],
     emoji: '🟡'
+  },
+  WHITE: {
+    id: 'white',
+    name: 'White Circle',
+    description: 'Calm and empathetic profile',
+    characteristics: [
+      'Tenang dalam mengambil keputusan',
+      'Empatik terhadap orang sekitar',
+      'Menyukai harmoni dan kestabilan',
+      'Cenderung suportif dan penyayang'
+    ],
+    emoji: '⚪'
+  }
+}
+
+const QUIZ_CATEGORY_WEIGHTS = {
+  physical: 3,
+  physiological: 2,
+  personality: 1
+}
+
+const QUIZ_CODE_TO_TYPE = {
+  A: 'red',
+  B: 'green',
+  C: 'yellow',
+  D: 'white'
+}
+
+function isQuizAnswerPayload(userData) {
+  const keys = Object.keys(userData || {})
+  return keys.some((key) => /^P(T|R|S)\d{2}$/.test(key))
+}
+
+export function calculateBodyTypeFromQuizAnswers(answers) {
+  const scores = { A: 0, B: 0, C: 0, D: 0 }
+  const unanswered = []
+
+  QUIZ_QUESTIONS.forEach((question) => {
+    const answer = answers?.[question.question_id]
+    if (!answer || !['A', 'B', 'C', 'D'].includes(answer)) {
+      unanswered.push(question.question_id)
+      return
+    }
+
+    const weight = QUIZ_CATEGORY_WEIGHTS[question.category] || 1
+    scores[answer] += weight
+  })
+
+  const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1])
+  const [topCode, topScore] = ranked[0]
+  const [secondCode, secondScore] = ranked[1]
+  const totalScore = Object.values(scores).reduce((acc, value) => acc + value, 0)
+
+  return {
+    primary_body_type: QUIZ_CODE_TO_TYPE[topCode],
+    primary_quiz_code: topCode,
+    primary_info: BODY_TYPE_DEFINITIONS[topCode],
+    secondary_body_type: secondScore > 0 ? QUIZ_CODE_TO_TYPE[secondCode] : null,
+    secondary_quiz_code: secondScore > 0 ? secondCode : null,
+    secondary_info: secondScore > 0 ? BODY_TYPE_DEFINITIONS[secondCode] : null,
+    confidence_score: totalScore ? Math.round((topScore / totalScore) * 100) : 0,
+    scores,
+    unanswered_questions: unanswered,
+    reasoning: {
+      summary: `Body type dominan Anda adalah ${BODY_TYPE_DEFINITIONS[topCode].type}.`,
+      explanation: BODY_TYPE_DEFINITIONS[topCode].core_traits
+    },
+    timestamp: new Date().toISOString()
   }
 }
 
@@ -165,6 +235,10 @@ const RULES = {
 
 // Calculate body type based on rules
 export function calculateBodyType(userData) {
+  if (isQuizAnswerPayload(userData)) {
+    return calculateBodyTypeFromQuizAnswers(userData)
+  }
+
   const scores = {
     red: 0,
     blue: 0,
