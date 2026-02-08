@@ -6,7 +6,7 @@ import Button from '../../components/ui/Button'
 import './LogPage.css'
 
 export default function LogPage() {
-  const { getTodayLog, updateTodayLog } = useHabit()
+  const { getTodayLog, updateTodayLog, getTrackerAccess, getTodayReminder } = useHabit()
   const [logData, setLogData] = useState({
     sleep_hours: '',
     sleep_quality: '',
@@ -19,6 +19,10 @@ export default function LogPage() {
   })
   
   const [saved, setSaved] = useState(false)
+  const [saveError, setSaveError] = useState('')
+
+  const trackerAccess = getTrackerAccess()
+  const reminder = getTodayReminder()
   
   useEffect(() => {
     const todayLog = getTodayLog()
@@ -28,7 +32,13 @@ export default function LogPage() {
   }, [])
   
   const handleSave = () => {
-    updateTodayLog(logData)
+    const result = updateTodayLog(logData)
+    if (!result?.success) {
+      setSaveError(result?.message || 'Unable to save your log right now.')
+      return
+    }
+
+    setSaveError('')
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
@@ -47,7 +57,15 @@ export default function LogPage() {
         >
           <h1>Daily Log</h1>
           <p>Track your day in 60 seconds</p>
+          <p>{trackerAccess.message}</p>
+          <p>{reminder.message}</p>
         </motion.div>
+
+        {saveError && (
+          <Card>
+            <p>{saveError}</p>
+          </Card>
+        )}
         
         {/* Sleep */}
         <motion.div
@@ -263,8 +281,9 @@ export default function LogPage() {
             size="lg"
             onClick={handleSave}
             variant={saved ? 'secondary' : 'primary'}
+            disabled={!trackerAccess.canLogToday}
           >
-            {saved ? '✓ Saved!' : 'Save Today\'s Log'}
+            {saved ? '✓ Saved!' : trackerAccess.canLogToday ? 'Save Today\'s Log' : 'Free Limit Reached'}
           </Button>
         </motion.div>
       </div>
