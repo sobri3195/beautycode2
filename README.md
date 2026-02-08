@@ -7,6 +7,11 @@
 
 Beautycode adalah AI-powered Health & Aging Operating System yang membantu Anda memahami body type sebagai biological kernel, lalu mengonversinya menjadi sistem kebiasaan harian yang sustainable dalam 90 hari.
 
+
+## 📘 Business Roadmap
+
+Detail roadmap bisnis terbaru tersedia di: **`BUSINESS_ROADMAP_DETAIL.md`**.
+
 ## 🎯 Prinsip Inti
 
 ```
