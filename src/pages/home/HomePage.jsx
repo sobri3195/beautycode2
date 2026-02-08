@@ -203,6 +203,77 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Token Economy */}
+      <section className="token-economy">
+        <div className="container">
+          <h2 className="section-title">V. Token Economy (Engagement + Flexibility)</h2>
+
+          <div className="token-grid">
+            <motion.div
+              className="token-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              <h3>Fungsi Token</h3>
+              <ul>
+                <li>Mata uang internal</li>
+                <li>Mengurangi “rasa bayar”</li>
+                <li>Memberi rasa progres</li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              className="token-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+            >
+              <h3>Cara Dapat Token</h3>
+              <ul>
+                <li>Aktivitas &amp; konsistensi</li>
+                <li>Sharing / referral</li>
+                <li>Subscription bonus</li>
+                <li>Top-up langsung</li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              className="token-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            >
+              <h3>Penggunaan Token</h3>
+              <ul>
+                <li>Unlock fitur</li>
+                <li>Konsultasi</li>
+                <li>Produk digital</li>
+                <li>Program khusus</li>
+              </ul>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="token-business-value"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
+            <h3>Nilai Bisnis</h3>
+            <div className="token-value-list">
+              <span>Gamified retention</span>
+              <span>Lower churn</span>
+              <span>Higher LTV</span>
+            </div>
+          </motion.div>
+        </div>
+      </section>
       
       {/* Disclaimer */}
       <section className="disclaimer">
