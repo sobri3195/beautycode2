@@ -55,6 +55,40 @@ Generate personalized daily habits dalam 5 kategori:
 - ⚠️ Risk alerts dengan gentle reminders
 - 🎯 Next week focus recommendations
 
+## III. STRUKTUR PRODUK & MODUL BISNIS
+
+### MODUL 1 – BODY TYPE PROFILING (ENTRY POINT)
+
+**Tujuan Bisnis**
+- Membuat user merasa: “ini gue banget”
+- Membangun trust sejak menit pertama
+
+**Nilai Bisnis**
+- Tingkatkan completion rate
+- Menurunkan bounce
+- Jadi data core untuk semua upsell
+
+**Output**
+- Multi-dominan body type (persentase)
+- Insight ringkas (free)
+- Insight mendalam (paid)
+
+### MODUL 2 – INSIGHT & EDUCATION
+
+**Free Layer**
+- Insight ringkas
+- Bahasa awam
+- Fokus “apa & kenapa”
+
+**Paid Layer**
+- Penjelasan mendalam
+- Konteks aging gracefully
+- Koneksi ke kebiasaan & risiko jangka panjang
+
+**Nilai Bisnis**
+- Edukasi = trust
+- Trust = willingness to pay
+
 ## 🏗️ Arsitektur
 
 ### Tech Stack
