@@ -228,6 +228,65 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Business Roadmap */}
+      <section className="business-roadmap">
+        <div className="container">
+          <h2 className="section-title">Roadmap Waktu (Business Phase)</h2>
+          <div className="roadmap-grid">
+            <article className="roadmap-card">
+              <p className="roadmap-phase">PHASE 1 – VALIDATION (0–3 bulan)</p>
+              <ul>
+                <li>MVP jalan</li>
+                <li>Profiling + habit</li>
+                <li>Free vs paid diuji</li>
+              </ul>
+              <p className="roadmap-focus">Fokus: user behavior</p>
+            </article>
+
+            <article className="roadmap-card">
+              <p className="roadmap-phase">PHASE 2 – ENGAGEMENT (3–6 bulan)</p>
+              <ul>
+                <li>Token aktif</li>
+                <li>Gamifikasi</li>
+                <li>Insight adaptif</li>
+              </ul>
+              <p className="roadmap-focus">Fokus: retention</p>
+            </article>
+
+            <article className="roadmap-card">
+              <p className="roadmap-phase">PHASE 3 – SCALE &amp; MONETIZE (6–12 bulan)</p>
+              <ul>
+                <li>Konsultasi</li>
+                <li>Produk digital</li>
+                <li>Partnership</li>
+              </ul>
+              <p className="roadmap-focus">Fokus: LTV &amp; brand authority</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* Final Positioning */}
+      <section className="positioning-final">
+        <div className="container">
+          <div className="positioning-card">
+            <h2>Positioning Akhir</h2>
+            <p className="positioning-label">BeautyCode adalah:</p>
+            <ul className="positioning-list">
+              <li>❌ Bukan aplikasi diet</li>
+              <li>❌ Bukan aplikasi skincare</li>
+              <li>❌ Bukan aplikasi medis</li>
+              <li className="positioning-yes">✅ Body Awareness &amp; Aging Companion App</li>
+            </ul>
+            <blockquote>
+              “Kami tidak membuat Anda awet muda.
+              <br />
+              Kami membantu Anda menjalani usia dengan sadar.”
+            </blockquote>
+          </div>
+        </div>
+      </section>
       
       {/* CTA Section */}
       <section className="cta-section">
