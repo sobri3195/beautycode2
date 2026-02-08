@@ -261,6 +261,94 @@
   color: var(--color-text-secondary);
 }
 
+/* Business Roadmap */
+.business-roadmap {
+  padding: var(--spacing-2xl) 0;
+  background: white;
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.roadmap-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+}
+
+.roadmap-phase {
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+}
+
+.roadmap-card ul {
+  margin: 0;
+  padding-left: var(--spacing-lg);
+}
+
+.roadmap-card li {
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text-secondary);
+}
+
+.roadmap-focus {
+  margin-top: var(--spacing-md);
+  font-weight: 600;
+}
+
+/* Final Positioning */
+.positioning-final {
+  padding: var(--spacing-2xl) 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f3ff 100%);
+}
+
+.positioning-card {
+  max-width: 860px;
+  margin: 0 auto;
+  background: white;
+  border: 2px solid #ddd6fe;
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+}
+
+.positioning-card h2 {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.positioning-label {
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+}
+
+.positioning-list {
+  margin: 0 0 var(--spacing-lg);
+  padding-left: var(--spacing-xl);
+}
+
+.positioning-list li {
+  margin: var(--spacing-sm) 0;
+}
+
+.positioning-yes {
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+.positioning-card blockquote {
+  margin: 0;
+  padding: var(--spacing-lg);
+  border-left: 4px solid #8b5cf6;
+  background: #faf5ff;
+  border-radius: var(--radius-md);
+  font-size: 1.125rem;
+  color: #4c1d95;
+}
+
 /* CTA Section */
 .cta-section {
   padding: var(--spacing-2xl) 0;
@@ -334,5 +422,9 @@
   
   .types-grid {
     grid-template-columns: 1fr;
+  }
+
+  .positioning-card {
+    padding: var(--spacing-lg);
   }
 }
