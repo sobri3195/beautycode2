@@ -9,8 +9,9 @@ import './TodayPage.css'
 
 export default function TodayPage() {
   const { user, bodyType } = useUser()
-  const { dailyHabits, loadTodayHabits, getTodayLog, currentStreak, getWeekLogs } = useHabit()
+  const { dailyHabits, loadTodayHabits, getTodayLog, currentStreak, getWeekLogs, getTodayReminder } = useHabit()
   const [todayInsight, setTodayInsight] = useState(null)
+  const todayReminder = getTodayReminder()
   const [quickStats, setQuickStats] = useState({
     sleep: { value: 'No data', status: 'neutral' },
     nutrition: { value: 'No data', status: 'neutral' },
@@ -126,6 +127,21 @@ export default function TodayPage() {
           </Card>
         </motion.div>
         
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+        >
+          <Card className="focus-card">
+            <div className="focus-header">
+              <h2>Reminder</h2>
+              <span className="focus-emoji">🔔</span>
+            </div>
+            <p className="focus-message">{todayReminder.message}</p>
+          </Card>
+        </motion.div>
+
         {/* Today's Focus */}
         {dailyHabits && (
           <motion.div

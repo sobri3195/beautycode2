@@ -8,10 +8,11 @@ import './InsightPage.css'
 
 export default function InsightPage() {
   const { user, bodyType } = useUser()
-  const { getWeekLogs } = useHabit()
+  const { getWeekLogs, getWeeklyRetentionInsight } = useHabit()
   const [weeklySummary, setWeeklySummary] = useState(null)
   const [patternData, setPatternData] = useState(null)
   const [activeTab, setActiveTab] = useState('week')
+  const weeklyRetentionInsight = getWeeklyRetentionInsight()
 
   useEffect(() => {
     const weekLogs = getWeekLogs()
@@ -39,6 +40,18 @@ export default function InsightPage() {
           <p>Your health patterns & progress</p>
         </motion.div>
         
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+        >
+          <Card>
+            <h3>{weeklyRetentionInsight.title}</h3>
+            <p>{weeklyRetentionInsight.message}</p>
+          </Card>
+        </motion.div>
+
         {/* Tabs */}
         <div className="insight-tabs">
           <button

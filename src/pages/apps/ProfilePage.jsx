@@ -9,7 +9,7 @@ import './ProfilePage.css'
 export default function ProfilePage() {
   const navigate = useNavigate()
   const { user, bodyType, clearUser } = useUser()
-  const { habitLogs, currentStreak } = useHabit()
+  const { habitLogs, currentStreak, subscriptionPlan, updateSubscriptionPlan } = useHabit()
   
   const handleLogout = () => {
     if (confirm('Are you sure you want to reset your data? This cannot be undone.')) {
@@ -234,10 +234,10 @@ export default function ProfilePage() {
           <Card>
             <h3>Settings</h3>
             <div className="settings-list">
-              <button className="setting-item">
-                <span>🔔</span>
-                <span>Notifications</span>
-                <span className="setting-value">Coming Soon</span>
+              <button className="setting-item" onClick={() => updateSubscriptionPlan(subscriptionPlan === 'free' ? 'paid' : 'free')}>
+                <span>💳</span>
+                <span>Plan</span>
+                <span className="setting-value-enabled">{subscriptionPlan === 'free' ? 'Free (Upgrade)' : 'Paid'}</span>
               </button>
               <button className="setting-item" onClick={handleExportData}>
                 <span>📤</span>
