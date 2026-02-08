@@ -130,6 +130,63 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Module 4 & Monetization */}
+      <section className="strategy-section">
+        <div className="container">
+          <h2 className="section-title">Modul 4 — Rekomendasi &amp; Roadmap</h2>
+          <p className="section-subtitle">
+            Struktur produk dirancang agar versi gratis tetap bermanfaat, sementara versi berbayar
+            memberikan jalur transformasi yang jelas dan terukur.
+          </p>
+
+          <div className="strategy-grid">
+            <article className="strategy-card">
+              <span className="strategy-badge free">Free</span>
+              <h3>Quick Win yang Aman</h3>
+              <ul>
+                <li>Mini action 1–2 langkah</li>
+                <li>Rekomendasi umum &amp; aman untuk mulai hari ini</li>
+                <li>Cukup untuk membangun awareness awal</li>
+              </ul>
+            </article>
+
+            <article className="strategy-card">
+              <span className="strategy-badge paid">Paid</span>
+              <h3>Guidance yang Programatik</h3>
+              <ul>
+                <li>Rekomendasi spesifik sesuai body type</li>
+                <li>Roadmap mingguan hingga 12 minggu</li>
+                <li>Habit reminder dan insight yang lebih mendalam</li>
+              </ul>
+            </article>
+
+            <article className="strategy-card business-value">
+              <span className="strategy-badge value">Nilai Bisnis</span>
+              <h3>High Perceived Value</h3>
+              <ul>
+                <li>Programized value yang jelas hasilnya</li>
+                <li>Progress terasa dari minggu ke minggu</li>
+                <li>Cocok untuk model one-time payment</li>
+              </ul>
+            </article>
+          </div>
+
+          <div className="monetization-card">
+            <h3>Model Monetisasi (Hybrid)</h3>
+            <ol>
+              <li>
+                <strong>Freemium sebagai fondasi:</strong> free tier bukan teaser kosong,
+                cukup untuk sadar tapi belum cukup untuk transformasi penuh.
+              </li>
+              <li>
+                <strong>Paid structure bertahap:</strong> unlock insight mendalam, unlock
+                habit &amp; reminder, unlock roadmap, lalu unlock konsultasi.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
       
       {/* Body Types Overview */}
       <section className="body-types">
