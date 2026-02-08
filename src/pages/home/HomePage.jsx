@@ -203,6 +203,93 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Product Mission */}
+      <section className="product-mission">
+        <div className="container">
+          <h2 className="section-title">Misi Produk: 3 Layer Journey</h2>
+          <p className="section-subtitle">
+            Beautycode dirancang untuk menemani user dari tahap memahami diri,
+            membangun ritme kebiasaan, hingga mencapai perubahan yang bertahan.
+          </p>
+
+          <div className="mission-grid">
+            <motion.article
+              className="mission-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="mission-number">01</div>
+              <h3>Awareness</h3>
+              <p>Membantu user mengenali body type &amp; pola hidupnya sendiri.</p>
+            </motion.article>
+
+            <motion.article
+              className="mission-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              <div className="mission-number">02</div>
+              <h3>Alignment</h3>
+              <p>Membantu user membangun kebiasaan yang selaras dengan tubuhnya.</p>
+            </motion.article>
+
+            <motion.article
+              className="mission-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="mission-number">03</div>
+              <h3>Transformation</h3>
+              <p>
+                Mengantar user ke perubahan jangka menengah–panjang melalui
+                program, konsultasi, dan produk yang relevan.
+              </p>
+            </motion.article>
+          </div>
+        </div>
+      </section>
+
+      {/* Market & Value Proposition */}
+      <section className="market-value">
+        <div className="container market-value-grid">
+          <motion.div
+            className="value-block"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2>Masalah Pasar Utama</h2>
+            <ul>
+              <li>User bingung mulai dari mana.</li>
+              <li>Solusi terlalu ekstrem atau terlalu generik.</li>
+              <li>Banyak aplikasi health yang ditinggalkan di minggu pertama.</li>
+              <li>Monetisasi sering terasa “maksa”.</li>
+            </ul>
+          </motion.div>
+
+          <motion.div
+            className="value-block"
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            <h2>Value Proposition BeautyCode</h2>
+            <ul>
+              <li>Personal sejak awal berdasarkan body type.</li>
+              <li>Ringan di awal, dalam di belakang.</li>
+              <li>Gratis tapi tetap bermakna.</li>
+              <li>Bayar karena user siap, bukan karena dipaksa.</li>
+            </ul>
+          </motion.div>
+        </div>
+      </section>
       
       {/* Disclaimer */}
       <section className="disclaimer">
