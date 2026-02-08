@@ -224,6 +224,51 @@
   border-top: none;
 }
 
+
+/* Token Economy */
+.token-economy {
+  padding: var(--spacing-2xl) 0;
+  background: white;
+}
+
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.token-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+}
+
+.token-card h3 {
+  margin-bottom: var(--spacing-md);
+  font-size: 1.25rem;
+}
+
+.token-card ul {
+  margin: 0;
+  padding-left: var(--spacing-lg);
+}
+
+.token-card li {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.token-card li:last-child {
+  margin-bottom: 0;
+}
+
+.token-value {
+  background: linear-gradient(135deg, #eef2ff 0%, #fdf2f8 100%);
+  border-color: #c7d2fe;
+}
+
 /* Disclaimer */
 .disclaimer {
   padding: var(--spacing-2xl) 0;
